@@ -1,21 +1,18 @@
 import time
-
-import click as click
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 
-desired_cap= {
+desired_cap = {
     "appium:deviceName": "emulator-5556",
     "platformName": "Android",
     "appium:app": "C:\\Users\\godknows_velocityinc\\Downloads\\pointsAfrica.apk"
 }
-driver = webdriver.Remote("http://localhost:4723/wd/hub",desired_cap)
+driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_cap)
 driver.implicitly_wait(300)
-# Find the element by Accessibilty ID and click it
+# Find the element by Accessibility ID and click it
 element = driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sign In")
 element.click()
 # Using X-Path method
@@ -27,11 +24,11 @@ pass_eye = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-des
 # Click the dropdown to open it
 pass_eye.click()
 # Function to scroll to the desired country
-def scroll_to_country(desired_country):
+def scroll_to_country(chosen_nation):
     global dropdown_items  # Declare the variable as global to access and update it
     while True:
         for item in dropdown_items:
-            if desired_country in item.get_attribute("content-desc"):
+            if chosen_nation in item.get_attribute("content-desc"):
                 return item
         # Perform a swipe action to scroll down the dropdown list
         height = driver.get_window_size()['height']
@@ -40,9 +37,11 @@ def scroll_to_country(desired_country):
         # Update the list of dropdown items after scrolling
         dropdown_items = driver.find_elements(MobileBy.XPATH, '//android.widget.ImageView[@content-desc]')
 
+
 # Wait for the dropdown items to load
 wait = WebDriverWait(driver, 10)
-dropdown_items = wait.until(EC.presence_of_all_elements_located((MobileBy.XPATH, '//android.widget.ImageView[@content-desc]')))
+dropdown_items = wait.until(EC.presence_of_all_elements_located((MobileBy.XPATH, '//android.widget.ImageView['
+                                                                                 '@content-desc]')))
 
 # Scroll to the desired country (e.g., "Zimbabwe")
 desired_country = "+263 Zimbabwe"
@@ -61,7 +60,11 @@ driver.implicitly_wait(2)
 
 
 phone_insert = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[1]'))
+    EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                    '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                    '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                    '/android.view.View/android.view.View/android.view.View/android'
+                                                    '.view.View/android.view.View/android.widget.EditText[1]'))
 )
 
 # Use TouchAction to simulate a tap on the input field
@@ -77,7 +80,11 @@ driver.hide_keyboard()
 driver.implicitly_wait(2)
 
 password_input = WebDriverWait(driver, 20).until(
-    EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[2]'))
+    EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                    '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                    '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                    '/android.view.View/android.view.View/android.view.View/android'
+                                                    '.view.View/android.view.View/android.widget.EditText[2]'))
 )
 
 # Use TouchAction to simulate a tap on the input field
@@ -91,7 +98,11 @@ driver.hide_keyboard()
 
 # Show password eye
 
-pass_eye = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.EditText[2]/android.widget.ImageView')
+pass_eye = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+                                               '/android.widget.FrameLayout/android.widget.FrameLayout/android.widget'
+                                               '.FrameLayout/android.view.View/android.view.View/android.view.View'
+                                               '/android.view.View/android.view.View/android.view.View/android.widget'
+                                               '.EditText[2]/android.widget.ImageView')
 
 # Click password eye to show
 pass_eye.click()
@@ -100,14 +111,19 @@ driver.implicitly_wait(3)
 
 pass_eye.click()
 
-#Checkbox for remember me
-remember_me_checkbox = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[4]')
+# Checkbox for remember me
+remember_me_checkbox = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                           '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                           '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                           '/android.view.View/android.view.View/android.view.View'
+                                                           '/android.view.View/android.view.View/android.widget'
+                                                           '.ImageView[4]')
 
 # Click on the checkbox to toggle its selection
 remember_me_checkbox.click()
 
 
-#Then sign in
+# Then sign in
 
 sign_inn = driver.find_element(MobileBy.XPATH, '(//android.view.View[@content-desc="Sign In"])[2]')
 
@@ -115,7 +131,7 @@ sign_inn = driver.find_element(MobileBy.XPATH, '(//android.view.View[@content-de
 sign_inn.click()
 
 driver.implicitly_wait(10)
-#clear the biometrics pop-up(Activate)
+# clear the biometrics pop-up(Activate)
 activate_btn = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
 activate_btn.click()
 time.sleep(5)
@@ -123,7 +139,12 @@ time.sleep(5)
 # scroll on all the deals
 driver.implicitly_wait(10)
 # Find the initial number of deals on the dashboard (optional, if you want to track when the list ends)
-initial_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ScrollView'))  # Replace with the XPath to locate all deal elements
+initial_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                               '.LinearLayout/android.widget.FrameLayout/android'
+                                                               '.widget.FrameLayout/android.widget.FrameLayout'
+                                                               '/android.view.View/android.view.View/android.view'
+                                                               '.View/android.view.View/android.widget.ScrollView'))
+# Replace with the XPath to locate all deal elements
 
 # Swipe and keep scrolling until the number of deals remains the same (indicating the end of the list)
 while True:
@@ -137,7 +158,12 @@ while True:
     time.sleep(10)
 
     # Find the updated number of deals on the dashboard
-    updated_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ScrollView'))
+    updated_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android'
+                                                                   '.widget.LinearLayout/android.widget.FrameLayout'
+                                                                   '/android.widget.FrameLayout/android.widget'
+                                                                   '.FrameLayout/android.view.View/android.view.View'
+                                                                   '/android.view.View/android.view.View/android'
+                                                                   '.widget.ScrollView'))
 
     # Check if the number of deals remains the same as the initial count
     if updated_deals_count == initial_deals_count:
@@ -152,7 +178,10 @@ while True:
 
 # click on the Navigation Drawer
 driver.implicitly_wait(20)
-nav_drawer = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[1]')
+nav_drawer = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+                                                 '/android.widget.FrameLayout/android.widget.FrameLayout/android'
+                                                 '.widget.FrameLayout/android.view.View/android.view.View/android'
+                                                 '.view.View/android.view.View/android.widget.ImageView[1]')
 nav_drawer.click()
 
 driver.implicitly_wait(10)
@@ -164,12 +193,21 @@ time.sleep(10)
 
 # click on change image icon
 driver.implicitly_wait(5)
-change_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[3]')
+change_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+                                                   '/android.widget.FrameLayout/android.widget.FrameLayout/android'
+                                                   '.widget.FrameLayout/android.view.View/android.view.View/android'
+                                                   '.view.View/android.view.View/android.view.View/android.view.View'
+                                                   '/android.widget.ImageView[3]')
 change_image.click()
 time.sleep(5)
 
 driver.implicitly_wait(5)
-choose_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.widget.ScrollView/android.view.View[2]/android.view.View/android.view.View/android.widget.ImageView[1]')
+choose_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+                                                   '/android.widget.FrameLayout/android.widget.FrameLayout/android'
+                                                   '.widget.FrameLayout/android.view.View/android.view.View/android'
+                                                   '.view.View['
+                                                   '1]/android.view.View/android.widget.ScrollView/android.view.View['
+                                                   '2]/android.view.View/android.view.View/android.widget.ImageView[1]')
 choose_image.click()
 time.sleep(5)
 
