@@ -146,5 +146,5 @@ driver.implicitly_wait(3)
 
 cancel_button = driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
 
-# Click on the "Cancel" button
+
 cancel_button.click()
