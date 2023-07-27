@@ -118,28 +118,62 @@ driver.implicitly_wait(10)
 #clear the biometrics pop-up(Activate)
 activate_btn = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
 activate_btn.click()
+time.sleep(5)
+
+# scroll on all the deals
+driver.implicitly_wait(10)
+# Find the initial number of deals on the dashboard (optional, if you want to track when the list ends)
+initial_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ScrollView'))  # Replace with the XPath to locate all deal elements
+
+# Swipe and keep scrolling until the number of deals remains the same (indicating the end of the list)
+while True:
+    # Swipe from the bottom of the screen to the top
+    height = driver.get_window_size()['height']
+    width = driver.get_window_size()['width']
+    driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2, duration=800)
+
+    # Wait for a short time to let the list load and settle after scrolling
+    time.sleep(10)
+
+    # Find the updated number of deals on the dashboard
+    updated_deals_count = len(driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ScrollView'))
+
+    # Check if the number of deals remains the same as the initial count
+    if updated_deals_count == initial_deals_count:
+        break  # Break the loop as you have reached the end of the list
+
+    # Update the initial count for the next iteration
+    initial_deals_count = updated_deals_count
+
+# Optional: Wait for a short time to let the scrolling action complete (if required)
+    time.sleep(10)
+
 
 # click on the Navigation Drawer
-driver.implicitly_wait(10)
-profile_info = driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Sand"]')
-profile_info.click()
+driver.implicitly_wait(20)
+nav_drawer = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[1]')
+nav_drawer.click()
 
-driver.implicitly_wait(5)
+driver.implicitly_wait(10)
+time.sleep(10)
+
 edit_profile = driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Edit Profile')
 edit_profile.click()
+time.sleep(10)
 
 # click on change image icon
 driver.implicitly_wait(5)
-change_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.widget.ScrollView/android.widget.ImageView[1]')
+change_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[3]')
 change_image.click()
-
+time.sleep(5)
 
 driver.implicitly_wait(5)
 choose_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.widget.ScrollView/android.view.View[2]/android.view.View/android.view.View/android.widget.ImageView[1]')
 choose_image.click()
+time.sleep(5)
 
-driver.implicitly_wait(10)
-save_profile = driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Save')
+
+save_profile = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Save"]')
 save_profile.click()
 
 driver.implicitly_wait(3)
