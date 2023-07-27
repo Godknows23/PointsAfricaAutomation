@@ -131,6 +131,7 @@ while True:
     height = driver.get_window_size()['height']
     width = driver.get_window_size()['width']
     driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2, duration=800)
+    driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2, duration=800)
 
     # Wait for a short time to let the list load and settle after scrolling
     time.sleep(10)
@@ -173,12 +174,32 @@ choose_image.click()
 time.sleep(5)
 
 
-save_profile = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Save"]')
-save_profile.click()
-
-driver.implicitly_wait(3)
-
-cancel_button = driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
+save = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[2]')
+save.click()
 
 
-cancel_button.click()
+time.sleep(5)
+
+cancel_btn = driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
+
+cancel_btn.click()
+
+# offers page
+time.sleep(5)
+
+offer_btn = driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Offers"]')
+
+offer_btn.click()
+
+# Rewards page
+time.sleep(5)
+offer_btn = driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Rewards"]')
+
+offer_btn.click()
+
+
+# Home page
+time.sleep(2)
+home_btn = driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Home"]')
+
+home_btn.click()
