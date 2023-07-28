@@ -24,7 +24,7 @@ pass_eye = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-des
 # Click the dropdown to open it
 pass_eye.click()
 # Function to scroll to the desired country
-def scroll_to_country(chosen_nation):
+def testScroll_to_country(chosen_nation):
     global dropdown_items  # Declare the variable as global to access and update it
     while True:
         for item in dropdown_items:
@@ -45,7 +45,7 @@ dropdown_items = wait.until(EC.presence_of_all_elements_located((MobileBy.XPATH,
 
 # Scroll to the desired country (e.g., "Zimbabwe")
 desired_country = "+263 Zimbabwe"
-desired_country_element = scroll_to_country(desired_country)
+desired_country_element = testScroll_to_country(desired_country)
 
 if desired_country_element:
     # Perform a tap action to click the desired country element
