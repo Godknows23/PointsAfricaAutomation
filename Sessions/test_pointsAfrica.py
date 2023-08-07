@@ -1,20 +1,29 @@
 import time
+import allure
+import pytest
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import unittest
+
 
 desired_cap = {
-    "appium:deviceName": "emulator-5556",
-    "platformName": "Android",
-    "appium:app": "C:\\Users\\godknows_velocityinc\\Downloads\\pointsAfrica.apk"
-}
+        "appium:deviceName": "emulator-5556",
+        "platformName": "Android",
+        "appium:app": "C:\\Users\\godknows_velocityinc\\Downloads\\points.apk"
+    }
+
+
 driver = webdriver.Remote("http://localhost:4723/wd/hub", desired_cap)
 driver.implicitly_wait(300)
+print("Device has been connected, Points Africa App is ready")
 # Find the element by Accessibility ID and click it
 element = driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sign In")
 element.click()
+print("Click on Sign In button")
+
 # Using X-Path method
 # element = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Sign In"]')
 # element.click()
@@ -23,8 +32,11 @@ pass_eye = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-des
 
 # Click the dropdown to open it
 pass_eye.click()
+print("show password")
+
+
 # Function to scroll to the desired country
-def testScroll_to_country(chosen_nation):
+def test_scroll_to_country(chosen_nation):
     global dropdown_items  # Declare the variable as global to access and update it
     while True:
         for item in dropdown_items:
@@ -40,12 +52,14 @@ def testScroll_to_country(chosen_nation):
 
 # Wait for the dropdown items to load
 wait = WebDriverWait(driver, 10)
+print("Scroll to find desired country , Zimbabwe in this case")
+
 dropdown_items = wait.until(EC.presence_of_all_elements_located((MobileBy.XPATH, '//android.widget.ImageView['
                                                                                  '@content-desc]')))
 
 # Scroll to the desired country (e.g., "Zimbabwe")
 desired_country = "+263 Zimbabwe"
-desired_country_element = testScroll_to_country(desired_country)
+desired_country_element = test_scroll_to_country(desired_country)
 
 if desired_country_element:
     # Perform a tap action to click the desired country element
@@ -57,7 +71,6 @@ else:
 # It's a good practice to add some wait after interacting with the dropdown
 # in case any animations or delays are present in the app.
 driver.implicitly_wait(2)
-
 
 phone_insert = WebDriverWait(driver, 20).until(
     EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
@@ -76,7 +89,6 @@ phone_insert.send_keys(phone_number)
 # Hide the keyboard if needed
 driver.hide_keyboard()
 
-
 driver.implicitly_wait(2)
 
 password_input = WebDriverWait(driver, 20).until(
@@ -90,7 +102,7 @@ password_input = WebDriverWait(driver, 20).until(
 # Use TouchAction to simulate a tap on the input field
 TouchAction(driver).tap(password_input).perform()
 
-pass_enter = "Godknows@25"
+pass_enter = "Godknows@100"
 password_input.send_keys(pass_enter)
 
 # Hide the keyboard if needed
@@ -121,7 +133,6 @@ remember_me_checkbox = driver.find_element(MobileBy.XPATH, '/hierarchy/android.w
 
 # Click on the checkbox to toggle its selection
 remember_me_checkbox.click()
-
 
 # Then sign in
 
@@ -172,9 +183,8 @@ while True:
     # Update the initial count for the next iteration
     initial_deals_count = updated_deals_count
 
-# Optional: Wait for a short time to let the scrolling action complete (if required)
+    # Optional: Wait for a short time to let the scrolling action complete (if required)
     time.sleep(10)
-
 
 # click on the Navigation Drawer
 driver.implicitly_wait(20)
@@ -211,10 +221,11 @@ choose_image = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.Fr
 choose_image.click()
 time.sleep(5)
 
-
-save = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.widget.ImageView[2]')
+save = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android'
+                                           '.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout'
+                                           '/android.view.View/android.view.View/android.view.View/android.view.View'
+                                           '/android.view.View/android.view.View/android.widget.ImageView[2]')
 save.click()
-
 
 time.sleep(5)
 
@@ -234,7 +245,6 @@ time.sleep(5)
 offer_btn = driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Rewards"]')
 
 offer_btn.click()
-
 
 # Home page
 time.sleep(2)
