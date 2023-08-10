@@ -5,12 +5,14 @@ from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import pytest
 
 dropdown_items = []
 
+
 @allure.story("Test Automation - Points Africa")
-@allure.feature("Test - Automation Framework in Python")
-@allure.testcase("Sign in and Transact")
+@allure.feature("Test - Open the Points Africa app and sign in")
+@allure.testcase("Sign in")
 class PointsAfricaTestAppium(unittest.TestCase):
 
     @classmethod
@@ -33,6 +35,15 @@ class PointsAfricaTestAppium(unittest.TestCase):
         finally:
             cls.driver.quit()
 
+    def setUp(self):
+        # Add any setup code specific to each test method here
+        pass
+
+    def tearDown(self):
+        # Add any cleanup code specific to each test method here
+        pass
+
+    @allure.step("Click on Sign In button")
     def test_sign_in_and_transact(self):
         # Find the element by Accessibility ID and click it
         element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sign In")
@@ -50,45 +61,44 @@ class PointsAfricaTestAppium(unittest.TestCase):
         country_drop.click()
         print("Click the dropdown")
 
-    @allure.story("Test Automation - Search African Country")
-    @allure.feature("Test - Automating scroll")
-    @allure.testcase("Scroll to find country")
-    def test_scroll_to_country(self):
-        global dropdown_items  # Declare the variable as global to access and update it
-        desired_country = ""  # Initialize the variable with an empty string
-
+    @allure.step("Scroll to find Country")
+    def test_zim_country(self, chosen_nation):
         while True:
-            for item in dropdown_items:
-                if desired_country in item.get_attribute("content-desc"):
-                    return item  # Exit the loop and function if the condition is met
-
+            for item in self.dropdown_items:
+                if chosen_nation in item.get_attribute("content-desc"):
+                    return item
             # Perform a swipe action to scroll down the dropdown list
             height = self.driver.get_window_size()['height']
             width = self.driver.get_window_size()['width']
             self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
                               duration=800)
-
             # Update the list of dropdown items after scrolling
-            wait = WebDriverWait(self.driver, 10)
-            print("Scroll to find desired country , Zimbabwe in this case")
+            self.dropdown_items = self.driver.find_elements(MobileBy.XPATH,
+                                                            '//android.widget.ImageView[@content-desc]')
 
-            dropdown_items = wait.until(
-                EC.presence_of_all_elements_located((MobileBy.XPATH, '//android.widget.ImageView[@content-desc]')))
+    @allure.step("Select Zimbabwe")
+    def test_zim_selection(self):
+        # Wait for the dropdown items to load
+        wait = WebDriverWait(self.driver, 10)
+        print("Scroll to find desired country , Zimbabwe in this case")
 
-            # The following lines of code were unreachable, so they've been moved outside the loop
-            desired_country = "+263 Zimbabwe"
-            desired_country_element = self.test_scroll_to_country(desired_country)
+        self.dropdown_items = wait.until(
+            EC.presence_of_all_elements_located((MobileBy.XPATH, '//android.widget.ImageView[@content-desc]')))
 
-            if desired_country_element:
-                # Perform a tap action to click the desired country element
-                action = TouchAction(self.driver)
-                action.tap(desired_country_element).perform()
-            else:
-                print("Desired country not found in the dropdown.")
+        # Scroll to the desired country (e.g., "Zimbabwe")
+        desired_country = "+263 Zimbabwe"
+        desired_country_element = self.test_zim_country(desired_country)
 
-            # It's a good practice to add some wait after interacting with the dropdown
-            # in case any animations or delays are present in the app.
-            self.driver.implicitly_wait(2)
+        if desired_country_element:
+            # Perform a tap action to click the desired country element
+            action = TouchAction(self.driver)
+            action.tap(desired_country_element).perform()
+        else:
+            print("Desired country not found in the dropdown.")
+
+        # It's a good practice to add some wait after interacting with the dropdown
+        # in case any animations or delays are present in the app.
+        self.driver.implicitly_wait(2)
 
 
 if __name__ == "__main__":
