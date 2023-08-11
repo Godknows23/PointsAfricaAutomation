@@ -44,7 +44,7 @@ class PointsAfricaTestAppium(unittest.TestCase):
         pass
 
     @allure.step("Click on Sign In button")
-    def test_sign_in_and_transact(self):
+    def test_1_sign_in_and_transact(self):
         # Find the element by Accessibility ID and click it
         element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sign In")
         element.click()
@@ -62,8 +62,9 @@ class PointsAfricaTestAppium(unittest.TestCase):
         print("Click the dropdown")
 
     @allure.step("Scroll to find Country")
-    def test_zim_country(self, chosen_nation):
+    def zim_country(self, chosen_nation):
         while True:
+
             for item in self.dropdown_items:
                 if chosen_nation in item.get_attribute("content-desc"):
                     return item
@@ -77,7 +78,7 @@ class PointsAfricaTestAppium(unittest.TestCase):
                                                             '//android.widget.ImageView[@content-desc]')
 
     @allure.step("Select Zimbabwe")
-    def test_zim_selection(self):
+    def test_2_country_selection(self):
         # Wait for the dropdown items to load
         wait = WebDriverWait(self.driver, 10)
         print("Scroll to find desired country , Zimbabwe in this case")
@@ -87,7 +88,7 @@ class PointsAfricaTestAppium(unittest.TestCase):
 
         # Scroll to the desired country (e.g., "Zimbabwe")
         desired_country = "+263 Zimbabwe"
-        desired_country_element = self.test_zim_country(desired_country)
+        desired_country_element = self.zim_country(desired_country)
 
         if desired_country_element:
             # Perform a tap action to click the desired country element
@@ -98,87 +99,110 @@ class PointsAfricaTestAppium(unittest.TestCase):
 
         # It's a good practice to add some wait after interacting with the dropdown
         # in case any animations or delays are present in the app.
-        self.driver.implicitly_wait(2)
+        self.driver.implicitly_wait(3)
 
+    @allure.step("Enter Phone Number")
+    def test_3_phone_number(self):
+        phone_insert = WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                            '/android.view.View/android.view.View/android.view.View'
+                                                            '/android'
+                                                            '.view.View/android.view.View/android.widget.EditText[1]'))
+        )
 
-if __name__ == "__main__":
-    unittest.main()
+        # Use TouchAction to simulate a tap on the input field
+        TouchAction(self.driver).tap(phone_insert).perform()
 
-# phone_insert = WebDriverWait(driver, 20).until(
-#     EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-#                                                     '.LinearLayout/android.widget.FrameLayout/android.widget'
-#                                                     '.FrameLayout/android.widget.FrameLayout/android.view.View'
-#                                                     '/android.view.View/android.view.View/android.view.View/android'
-#                                                     '.view.View/android.view.View/android.widget.EditText[1]'))
-# )
-#
-# # Use TouchAction to simulate a tap on the input field
-# TouchAction(driver).tap(phone_insert).perform()
-#
-# phone_number = "782670023"
-# phone_insert.send_keys(phone_number)
-#
-# # Hide the keyboard if needed
-# driver.hide_keyboard()
-#
-# driver.implicitly_wait(2)
-#
-# password_input = WebDriverWait(driver, 20).until(
-#     EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-#                                                     '.LinearLayout/android.widget.FrameLayout/android.widget'
-#                                                     '.FrameLayout/android.widget.FrameLayout/android.view.View'
-#                                                     '/android.view.View/android.view.View/android.view.View/android'
-#                                                     '.view.View/android.view.View/android.widget.EditText[2]'))
-# )
-#
-# # Use TouchAction to simulate a tap on the input field
-# TouchAction(driver).tap(password_input).perform()
-#
-# pass_enter = "Godknows@25"
-# password_input.send_keys(pass_enter)
-#
-# # Hide the keyboard if needed
-# driver.hide_keyboard()
-#
-# # Show password eye
-#
-# pass_eye = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
-#                                                '/android.widget.FrameLayout/android.widget.FrameLayout/android.widget'
-#                                                '.FrameLayout/android.view.View/android.view.View/android.view.View'
-#                                                '/android.view.View/android.view.View/android.view.View/android.widget'
-#                                                '.EditText[2]/android.widget.ImageView')
-#
-# # Click password eye to show
-# pass_eye.click()
-#
-# driver.implicitly_wait(3)
-#
-# pass_eye.click()
-#
-# # Checkbox for remember me
-# remember_me_checkbox = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-#                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
-#                                                            '.FrameLayout/android.widget.FrameLayout/android.view.View'
-#                                                            '/android.view.View/android.view.View/android.view.View'
-#                                                            '/android.view.View/android.view.View/android.widget'
-#                                                            '.ImageView[4]')
-#
-# # Click on the checkbox to toggle its selection
-# remember_me_checkbox.click()
-#
-# # Then sign in
-#
-# sign_inn = driver.find_element(MobileBy.XPATH, '(//android.view.View[@content-desc="Sign In"])[2]')
-#
-# # Click the dropdown to open it
-# sign_inn.click()
-#
-# driver.implicitly_wait(10)
-# # clear the biometrics pop-up(Activate)
-# activate_btn = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
-# activate_btn.click()
-# time.sleep(5)
-#
+        phone_number = "782670023"
+        phone_insert.send_keys(phone_number)
+
+        # Hide the keyboard if needed
+        self.driver.hide_keyboard()
+
+        self.driver.implicitly_wait(3)
+
+    @allure.step("Enter your Password")
+    def test_4_EnterPassword(self):
+        password_input = WebDriverWait(self.driver, 20).until(
+            EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                            '/android.view.View/android.view.View/android.view.View'
+                                                            '/android'
+                                                            '.view.View/android.view.View/android.widget.EditText[2]'))
+        )
+
+        # Use TouchAction to simulate a tap on the input field
+        TouchAction(self.driver).tap(password_input).perform()
+
+        pass_enter = "Godknows@25"
+        password_input.send_keys(pass_enter)
+
+        # Hide the keyboard if needed
+        self.driver.hide_keyboard()
+
+    @allure.step("Click on the Password")
+    def test_5_PassEye(self):
+        # Show password eye
+
+        pass_eye = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout'
+                                                            '/android.widget.FrameLayout/android.widget.FrameLayout'
+                                                            '/android.widget'
+                                                            '.FrameLayout/android.view.View/android.view.View/android'
+                                                            '.view'
+                                                            '.View'
+                                                            '/android.view.View/android.view.View/android.view.View'
+                                                            '/android.widget'
+                                                            '.EditText[2]/android.widget.ImageView')
+
+        # Click password eye to show
+        pass_eye.click()
+
+        self.driver.implicitly_wait(4)
+
+        pass_eye.click()
+
+    @allure.step("Remember Me")
+    def test_6_RememberMe(self):
+        # Checkbox for remember me
+        remember_me_checkbox = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout'
+                                                                        '/android.widget'
+                                                                        '.LinearLayout/android.widget.FrameLayout'
+                                                                        '/android'
+                                                                        '.widget'
+                                                                        '.FrameLayout/android.widget.FrameLayout'
+                                                                        '/android'
+                                                                        '.view.View'
+                                                                        '/android.view.View/android.view.View/android'
+                                                                        '.view.View'
+                                                                        '/android.view.View/android.view.View/android'
+                                                                        '.widget'
+                                                                        '.ImageView[4]')
+
+        # Click on the checkbox to toggle its selection
+        remember_me_checkbox.click()
+
+    @allure.step("Click sign In to proceed")
+    def test_6_SignIn(self):
+        # Then sign in
+
+        sign_inn = self.driver.find_element(MobileBy.XPATH, '(//android.view.View[@content-desc="Sign In"])[2]')
+
+        # Click the dropdown to open it
+        sign_inn.click()
+
+        self.driver.implicitly_wait(10)
+
+    @allure.step("Activate Biometrics")
+    def test_7_BiometricsActive(self):
+        # clear the biometrics pop-up(Activate)
+        activate_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
+        activate_btn.click()
+        self.driver.implicitly_wait(10)
+
 # # scroll on all the deals
 # driver.implicitly_wait(10)
 # # Find the initial number of deals on the dashboard (optional, if you want to track when the list ends)
