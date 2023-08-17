@@ -4,7 +4,6 @@ import allure
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
-from selenium.common import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -387,4 +386,42 @@ class PointsAfrica(unittest.TestCase):
         self.home_btn.click()
         time.sleep(3)
 
-        assert self.home_btn(MobileBy.ACCESSIBILITY_ID, 'All Deals'), "Text 'All Deals 'not found"
+        assert self.home_btn.is_displayed(), "Text 'All Deals' All Deals 'not found"
+
+    @allure.step("Click on the next button for Vendors shown on Dashboard ")
+    def test_19_NextBtn(self):
+        time.sleep(3)
+        next_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
+                                                            '.View/android.view.View/android.view.View/android.view'
+                                                            '.View/android.widget.ScrollView/android.widget'
+                                                            '.ImageView[4]')
+        for _ in range(4):  # Click the item four times
+            next_btn.click()
+
+    @allure.step("Click view all ")
+    def test_20_ViewAll(self):
+        time.sleep(3)
+        view_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'View all')
+        view_all.click()
+
+    @allure.step("Assert List of Partners")
+    def test_AssertListOfPartners(self):
+        # List of companies you expect to find on the page
+        expected_partners = ["Goil", "Starlite", "Banana Home", "Star Oil", "Barcelos"]
+
+        # Locate the list of partner elements on the page
+        company_elements = self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android'
+                                                                     '.widget.LinearLayout/android.widget.FrameLayout'
+                                                                     '/android.widget.FrameLayout/android.widget'
+                                                                     '.FrameLayout/android.view.View/android.view'
+                                                                     '.View/android.view.View/android.view.View'
+                                                                     '/android.view.View[4]')
+
+        # Iterate through the expected companies and check if they are present
+        for partner in expected_partners:
+            if partner not in [element.text for element in company_elements]:
+                assert False, f"Company '{partner}' not found"
+
+

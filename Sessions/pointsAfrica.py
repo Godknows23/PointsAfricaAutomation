@@ -1,12 +1,12 @@
 import time
 import allure
 import pytest
+from allure_commons.types import AttachmentType
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import unittest
 
 
 desired_cap = {
@@ -32,11 +32,11 @@ pass_eye = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-des
 
 # Click the dropdown to open it
 pass_eye.click()
-print("show password")
+print("Click country dropdown")
 
 
 # Function to scroll to the desired country
-def test_scroll_to_country(chosen_nation):
+def scroll_to_country(chosen_nation):
     global dropdown_items  # Declare the variable as global to access and update it
     while True:
         for item in dropdown_items:
@@ -59,7 +59,7 @@ dropdown_items = wait.until(EC.presence_of_all_elements_located((MobileBy.XPATH,
 
 # Scroll to the desired country (e.g., "Zimbabwe")
 desired_country = "+263 Zimbabwe"
-desired_country_element = test_scroll_to_country(desired_country)
+desired_country_element = scroll_to_country(desired_country)
 
 if desired_country_element:
     # Perform a tap action to click the desired country element
@@ -82,6 +82,7 @@ phone_insert = WebDriverWait(driver, 20).until(
 
 # Use TouchAction to simulate a tap on the input field
 TouchAction(driver).tap(phone_insert).perform()
+print("Enter Mobile number in this case 782670023")
 
 phone_number = "782670023"
 phone_insert.send_keys(phone_number)
@@ -101,8 +102,9 @@ password_input = WebDriverWait(driver, 20).until(
 
 # Use TouchAction to simulate a tap on the input field
 TouchAction(driver).tap(password_input).perform()
+print("Enter your password ")
 
-pass_enter = "Godknows@100"
+pass_enter = "Godknows@25"
 password_input.send_keys(pass_enter)
 
 # Hide the keyboard if needed
@@ -115,6 +117,7 @@ pass_eye = driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameL
                                                '.FrameLayout/android.view.View/android.view.View/android.view.View'
                                                '/android.view.View/android.view.View/android.view.View/android.widget'
                                                '.EditText[2]/android.widget.ImageView')
+print("Click on the password eye to show password ")
 
 # Click password eye to show
 pass_eye.click()
@@ -130,6 +133,7 @@ remember_me_checkbox = driver.find_element(MobileBy.XPATH, '/hierarchy/android.w
                                                            '/android.view.View/android.view.View/android.view.View'
                                                            '/android.view.View/android.view.View/android.widget'
                                                            '.ImageView[4]')
+print("Click on the remember me checkbox")
 
 # Click on the checkbox to toggle its selection
 remember_me_checkbox.click()
@@ -137,12 +141,15 @@ remember_me_checkbox.click()
 # Then sign in
 
 sign_inn = driver.find_element(MobileBy.XPATH, '(//android.view.View[@content-desc="Sign In"])[2]')
+print("Click on sign in to login")
 
 # Click the dropdown to open it
 sign_inn.click()
 
 driver.implicitly_wait(10)
 # clear the biometrics pop-up(Activate)
+print("Clear the biometrics pop-up(Activate")
+
 activate_btn = driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
 activate_btn.click()
 time.sleep(5)
