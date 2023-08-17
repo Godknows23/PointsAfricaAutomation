@@ -4,6 +4,7 @@ import allure
 from appium import webdriver
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.common.touch_action import TouchAction
+from selenium.common import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -254,13 +255,13 @@ class PointsAfrica(unittest.TestCase):
             initial_deals_count = updated_deals_count
 
             # Optional: Wait for a short time to let the scrolling action complete (if required)
-            self.driver.implicitly_wait(10)
+            self.driver.implicitly_wait(5)
 
     @allure.step("Click on the Navigation drawer")
     def test_10_NavDrawer(self):
 
         # click on the Navigation Drawer
-        self.driver.implicitly_wait(20)
+        self.driver.implicitly_wait(10)
         nav_drawer = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
                                                               '.LinearLayout'
                                                               '/android.widget.FrameLayout/android.widget.FrameLayout'
@@ -271,15 +272,15 @@ class PointsAfrica(unittest.TestCase):
                                                               '.widget.ImageView[1]')
         nav_drawer.click()
 
-        self.driver.implicitly_wait(10)
-        time.sleep(10)
+        self.driver.implicitly_wait(5)
+        time.sleep(5)
 
     @allure.step("Edit Profile Button")
     def test_11_EditProfile(self):
 
         edit_profile = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Edit Profile')
         edit_profile.click()
-        time.sleep(10)
+        time.sleep(5)
 
         # click on change image icon
         self.driver.implicitly_wait(5)
@@ -405,23 +406,87 @@ class PointsAfrica(unittest.TestCase):
         time.sleep(3)
         view_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'View all')
         view_all.click()
+        time.sleep(3)
 
     @allure.step("Assert List of Partners")
-    def test_AssertListOfPartners(self):
-        # List of companies you expect to find on the page
-        expected_partners = ["Goil", "Starlite", "Banana Home", "Star Oil", "Barcelos"]
+    def test_21_AssertListOfPartners(self):
+        WebDriverWait(self.driver, 10)
 
-        # Locate the list of partner elements on the page
-        company_elements = self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android'
-                                                                     '.widget.LinearLayout/android.widget.FrameLayout'
-                                                                     '/android.widget.FrameLayout/android.widget'
-                                                                     '.FrameLayout/android.view.View/android.view'
-                                                                     '.View/android.view.View/android.view.View'
-                                                                     '/android.view.View[4]')
+        def scroll_to_bottom():
+            for _ in range(1):  # Scroll 1 time (adjust as needed)
+                # Define the coordinates for the scroll action
+                start_x = 500  # Adjust this value based on your app's layout
+                start_y = 1600  # Adjust this value based on your app's layout
+                end_y = 200  # Adjust this value based on your app's layout
 
-        # Iterate through the expected companies and check if they are present
-        for partner in expected_partners:
-            if partner not in [element.text for element in company_elements]:
-                assert False, f"Company '{partner}' not found"
+                # Perform the scroll action
+                action = TouchAction(self.driver)
+                action.press(x=start_x, y=start_y).move_to(x=start_x, y=end_y).release().perform()
 
+        expected_partner_ids = ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
+                                "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
+                                "Compu-Ghana", "Chicken Inn"]
 
+        scroll_to_bottom()
+
+        # Iterate through the expected company IDs and check if they are present
+        for partner_id in expected_partner_ids:
+            try:
+                self.driver.find_element(MobileBy.ACCESSIBILITY_ID, partner_id)
+            except NoSuchElementException:
+                assert False, f"Company with ID '{partner_id}' not found"
+
+    @allure.step("Sort List of Partners A-Z")
+    def test_22_SortListAtoZ(self):
+        WebDriverWait(self.driver, 10)
+
+        # Locate the sort button and click it
+        sort_button = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sort by")
+        sort_button.click()
+
+        # Locate the "A-Z" sort option and click it
+        sort_option_az = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (A - Z)")
+        sort_option_az.click()
+        time.sleep(3)
+
+        # Get the list of company names after sorting
+        sorted_company_names = self.get_company_names()
+
+        # Assertion: Check if the list is sorted in ascending alphabetical order
+        assert sorted_company_names == sorted(sorted_company_names), "List is not sorted A-Z"
+
+    @allure.step("Sort List of Partners Z-A")
+    def test_23_SortListZtoA(self):
+        WebDriverWait(self.driver, 10)
+        time.sleep(5)
+
+        # Locate the sort button and click it
+        sort_button = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Name (A - '
+                                                               'Z)"]')
+        sort_button.click()
+
+        # Locate the "Z-A" sort option and click it
+        sort_option_za = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (Z - A)")
+        sort_option_za.click()
+        time.sleep(2)
+
+        # Get the list of company names after sorting
+        sorted_company_names = self.get_company_names()
+
+        # Assertion: Check if the list is sorted in descending alphabetical order
+        assert sorted_company_names == sorted(sorted_company_names, reverse=True), "List is not sorted Z-A"
+
+    def get_company_names(self):
+        company_names = []
+
+        # Iterate through company elements and extract names
+        for company_id in ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
+                           "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
+                           "Compu-Ghana", "Chicken Inn"]:
+            try:
+                company_element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, company_id)
+                company_names.append(company_element.text)
+            except NoSuchElementException:
+                pass  # Handle element not found if needed
+
+        return company_names
