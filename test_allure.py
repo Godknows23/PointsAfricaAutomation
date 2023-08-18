@@ -45,7 +45,7 @@ class PointsAfrica(unittest.TestCase):
         pass
 
     @allure.step("Click on Sign In button")
-    def test_01_sign_in_and_transact(self):
+    def test_01_sign_in(self):
         # Find the element by Accessibility ID and click it
         element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sign In")
         element.click()
@@ -285,9 +285,6 @@ class PointsAfrica(unittest.TestCase):
         # click on change image icon
         self.driver.implicitly_wait(5)
 
-    @allure.step("Change Profile")
-    def test_12_ChangeAvatar(self):
-
         change_image = self.driver.find_element(MobileBy.XPATH,
                                                 '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
                                                 '/android.widget.FrameLayout/android.widget.FrameLayout/android'
@@ -297,19 +294,78 @@ class PointsAfrica(unittest.TestCase):
         change_image.click()
         time.sleep(5)
 
+    @allure.step("Test Avatar Count")
+    def test_12_AvatarCount(self):
+        WebDriverWait(self.driver, 10)
+
+        # Navigate to the page with avatars
+
+        # Define a list of 8 XPaths for avatars
+        avatar_xpaths = [
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[1]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.view.View/android.widget.ImageView[1]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[2]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[3]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[4]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[5]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[6]',
+            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+            '1]/android.view.View/android.widget.ScrollView/android.view.View['
+            '2]/android.view.View/android.widget.ImageView[7]'
+        ]
+
+        # Initialize a count for the avatars found
+        avatar_count = 0
+
+        # Iterate through the XPaths and locate avatar elements
+        for xpath in avatar_xpaths:
+            try:
+                self.driver.find_element(MobileBy.XPATH, xpath)
+                avatar_count += 1
+            except NoSuchElementException:
+                pass  # Handle element not found if needed
+
+        # Assertion: Check if the number of avatars is 8
+        assert avatar_count == 8, "Expected 8 avatars, but found different number"
+        time.sleep(1)
+
+        # choose_avatar_text = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Choose an avatar')
+        # assert choose_avatar_text.is_displayed(), "Choose an avatar text not displayed"
+        # assert choose_avatar_text.text == "Choose an avatar", "Incorrect text"
+
+    @allure.step("Test Avatar Selection")
+    def test_13_AvatarSelection(self):
         self.driver.implicitly_wait(5)
         choose_image = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-                                                                '.LinearLayout'
-                                                                '/android.widget.FrameLayout/android.widget.FrameLayout'
-                                                                '/android'
-                                                                '.widget.FrameLayout/android.view.View/android.view'
-                                                                '.View'
-                                                                '/android'
-                                                                '.view.View['
-                                                                '1]/android.view.View/android.widget.ScrollView/android'
-                                                                '.view.View['
-                                                                '2]/android.view.View/android.view.View/android.widget'
-                                                                '.ImageView[1]')
+                                                                '.LinearLayout/android.widget.FrameLayout/android'
+                                                                '.widget.FrameLayout/android.widget.FrameLayout'
+                                                                '/android.view.View/android.view.View/android.view'
+                                                                '.View['
+                                                                '1]/android.view.View/android.widget.ScrollView'
+                                                                '/android.view.View['
+                                                                '2]/android.view.View/android.widget.ImageView[6]')
         choose_image.click()
         time.sleep(5)
 
@@ -323,12 +379,12 @@ class PointsAfrica(unittest.TestCase):
         time.sleep(5)
 
     @allure.step("Change Profile")
-    def test_13_CancelBtn(self):
+    def test_14_CancelBtn(self):
         cancel_btn = self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
         cancel_btn.click()
 
     @allure.step("Click on Offers")
-    def test_14_OffersBtn(self):
+    def test_15_OffersBtn(self):
         # offers page
         time.sleep(5)
         offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Offers"]')
@@ -336,7 +392,7 @@ class PointsAfrica(unittest.TestCase):
         time.sleep(5)
 
     @allure.step("Click on Rewards")
-    def test_15_RewardsBtn(self):
+    def test_16_RewardsBtn(self):
         # Rewards page
         time.sleep(5)
         offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Rewards"]')
@@ -344,7 +400,7 @@ class PointsAfrica(unittest.TestCase):
         offer_btn.click()
 
     @allure.step("Click on Favourites")
-    def test_16_FavouritesBtn(self):
+    def test_17_FavouritesBtn(self):
         # Favourites button
         time.sleep(5)
         fav_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Favourites"]')
@@ -363,7 +419,7 @@ class PointsAfrica(unittest.TestCase):
         all_fav.click()
 
     @allure.step("Number of Favourites")
-    def test_17_FavList(self):
+    def test_18_FavList(self):
         time.sleep(5)
         wait = WebDriverWait(self.driver, 10)
 
@@ -375,7 +431,7 @@ class PointsAfrica(unittest.TestCase):
         assert self.favorites_text.is_displayed(), "Text 'Favourites' not displayed"
 
     @allure.step("Click on Home")
-    def test_18_HomeBtn(self):
+    def test_19_HomeBtn(self):
 
         # Home page
 
@@ -390,7 +446,7 @@ class PointsAfrica(unittest.TestCase):
         assert self.home_btn.is_displayed(), "Text 'All Deals' All Deals 'not found"
 
     @allure.step("Click on the next button for Vendors shown on Dashboard ")
-    def test_19_NextBtn(self):
+    def test_20_NextBtn(self):
         time.sleep(3)
         next_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
                                                             '.LinearLayout/android.widget.FrameLayout/android.widget'
@@ -398,18 +454,29 @@ class PointsAfrica(unittest.TestCase):
                                                             '.View/android.view.View/android.view.View/android.view'
                                                             '.View/android.widget.ScrollView/android.widget'
                                                             '.ImageView[4]')
-        for _ in range(4):  # Click the item four times
+        for _ in range(5):  # Click the item five times
             next_btn.click()
 
+    def test_21_BackBtn(self):
+        time.sleep(3)
+        back_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
+                                                            '.View/android.view.View/android.view.View/android.view'
+                                                            '.View/android.widget.ScrollView/android.widget'
+                                                            '.ImageView[3]')
+        for _ in range(3):  # Click the item five times
+            back_btn.click()
+
     @allure.step("Click view all ")
-    def test_20_ViewAll(self):
+    def test_22_ViewAll(self):
         time.sleep(3)
         view_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'View all')
         view_all.click()
         time.sleep(3)
 
     @allure.step("Assert List of Partners")
-    def test_21_AssertListOfPartners(self):
+    def test_23_AssertListOfPartners(self):
         WebDriverWait(self.driver, 10)
 
         def scroll_to_bottom():
@@ -425,7 +492,7 @@ class PointsAfrica(unittest.TestCase):
 
         expected_partner_ids = ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
                                 "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
-                                "Compu-Ghana", "Chicken Inn"]
+                                "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]
 
         scroll_to_bottom()
 
@@ -437,7 +504,7 @@ class PointsAfrica(unittest.TestCase):
                 assert False, f"Company with ID '{partner_id}' not found"
 
     @allure.step("Sort List of Partners A-Z")
-    def test_22_SortListAtoZ(self):
+    def test_24_SortListAtoZ(self):
         WebDriverWait(self.driver, 10)
 
         # Locate the sort button and click it
@@ -456,7 +523,7 @@ class PointsAfrica(unittest.TestCase):
         assert sorted_company_names == sorted(sorted_company_names), "List is not sorted A-Z"
 
     @allure.step("Sort List of Partners Z-A")
-    def test_23_SortListZtoA(self):
+    def test_25_SortListZtoA(self):
         WebDriverWait(self.driver, 10)
         time.sleep(5)
 
@@ -482,7 +549,7 @@ class PointsAfrica(unittest.TestCase):
         # Iterate through company elements and extract names
         for company_id in ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
                            "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
-                           "Compu-Ghana", "Chicken Inn"]:
+                           "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]:
             try:
                 company_element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, company_id)
                 company_names.append(company_element.text)
