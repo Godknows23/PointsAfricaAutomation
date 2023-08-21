@@ -203,61 +203,62 @@ class PointsAfrica(unittest.TestCase):
         activate_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Activate"]')
         activate_btn.click()
         self.driver.implicitly_wait(10)
+        time.sleep(10)
 
-    @allure.step("Scroll on deals")
-    def test_09_DealScroll(self):
-        # scroll on all the deals
-        self.driver.implicitly_wait(10)
-        # Find the initial number of deals on the dashboard (optional, if you want to track when the list ends)
-        initial_deals_count = len(self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout'
-                                                                            '/android.widget'
-                                                                            '.LinearLayout/android.widget.FrameLayout'
-                                                                            '/android'
-                                                                            '.widget.FrameLayout/android.widget'
-                                                                            '.FrameLayout'
-                                                                            '/android.view.View/android.view.View'
-                                                                            '/android.view'
-                                                                            '.View/android.view.View/android.widget'
-                                                                            '.ScrollView'))
-        # Replace with the XPath to locate all deal elements
-
-        # Swipe and keep scrolling until the number of deals remains the same (indicating the end of the list)
-        while True:
-            # Swipe from the bottom of the screen to the top
-            height = self.driver.get_window_size()['height']
-            width = self.driver.get_window_size()['width']
-            self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
-                              duration=800)
-            self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
-                              duration=800)
-
-            # Wait for a short time to let the list load and settle after scrolling
-            self.driver.implicitly_wait(10)
-
-            # Find the updated number of deals on the dashboard
-            updated_deals_count = len(self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget'
-                                                                                '.FrameLayout/android'
-                                                                                '.widget.LinearLayout/android.widget'
-                                                                                '.FrameLayout'
-                                                                                '/android.widget.FrameLayout/android'
-                                                                                '.widget'
-                                                                                '.FrameLayout/android.view.View/android'
-                                                                                '.view.View'
-                                                                                '/android.view.View/android.view.View'
-                                                                                '/android'
-                                                                                '.widget.ScrollView'))
-
-            # Check if the number of deals remains the same as the initial count
-            if updated_deals_count == initial_deals_count:
-                break  # Break the loop as you have reached the end of the list
-
-            # Update the initial count for the next iteration
-            initial_deals_count = updated_deals_count
-
-            # Optional: Wait for a short time to let the scrolling action complete (if required)
-            self.driver.implicitly_wait(5)
-
-    @allure.step("Click on the Navigation drawer")
+    # @allure.step("Scroll on deals")
+    # def test_09_DealScroll(self):
+    #     # scroll on all the deals
+    #     self.driver.implicitly_wait(10)
+    #     # Find the initial number of deals on the dashboard (optional, if you want to track when the list ends)
+    #     initial_deals_count = len(self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout'
+    #                                                                         '/android.widget'
+    #                                                                         '.LinearLayout/android.widget.FrameLayout'
+    #                                                                         '/android'
+    #                                                                         '.widget.FrameLayout/android.widget'
+    #                                                                         '.FrameLayout'
+    #                                                                         '/android.view.View/android.view.View'
+    #                                                                         '/android.view'
+    #                                                                         '.View/android.view.View/android.widget'
+    #                                                                         '.ScrollView'))
+    #     # Replace with the XPath to locate all deal elements
+    #
+    #     # Swipe and keep scrolling until the number of deals remains the same (indicating the end of the list)
+    #     while True:
+    #         # Swipe from the bottom of the screen to the top
+    #         height = self.driver.get_window_size()['height']
+    #         width = self.driver.get_window_size()['width']
+    #         self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
+    #                           duration=800)
+    #         self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
+    #                           duration=800)
+    #
+    #         # Wait for a short time to let the list load and settle after scrolling
+    #         self.driver.implicitly_wait(10)
+    #
+    #         # Find the updated number of deals on the dashboard
+    #         updated_deals_count = len(self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget'
+    #                                                                             '.FrameLayout/android'
+    #                                                                             '.widget.LinearLayout/android.widget'
+    #                                                                             '.FrameLayout'
+    #                                                                             '/android.widget.FrameLayout/android'
+    #                                                                             '.widget'
+    #                                                                             '.FrameLayout/android.view.View/android'
+    #                                                                             '.view.View'
+    #                                                                             '/android.view.View/android.view.View'
+    #                                                                             '/android'
+    #                                                                             '.widget.ScrollView'))
+    #
+    #         # Check if the number of deals remains the same as the initial count
+    #         if updated_deals_count == initial_deals_count:
+    #             break  # Break the loop as you have reached the end of the list
+    #
+    #         # Update the initial count for the next iteration
+    #         initial_deals_count = updated_deals_count
+    #
+    #         # Optional: Wait for a short time to let the scrolling action complete (if required)
+    #         self.driver.implicitly_wait(5)
+    #
+    # @allure.step("Click on the Navigation drawer")
     def test_10_NavDrawer(self):
 
         # click on the Navigation Drawer
@@ -275,285 +276,339 @@ class PointsAfrica(unittest.TestCase):
         self.driver.implicitly_wait(5)
         time.sleep(5)
 
-    @allure.step("Edit Profile Button")
-    def test_11_EditProfile(self):
+    def test_11_TransactionHistory(self):
 
-        edit_profile = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Edit Profile')
-        edit_profile.click()
+        # click on the Transaction history link
+        self.driver.implicitly_wait(10)
+        trans_history = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Transaction History')
+        trans_history.click()
         time.sleep(5)
+        # Assertion: Check if both texts are present
+        points_xpath = '//android.view.View[@content-desc="Points"]'
+        transactions_xpath = '//android.view.View[@content-desc="Transactions"]'
+        assert self.is_text_present(points_xpath), "Points is not present"
+        assert self.is_text_present(transactions_xpath), "Transactions is not present"
 
-        # click on change image icon
-        self.driver.implicitly_wait(5)
+    def is_text_present(self, xpath):
+        try:
+            self.driver.find_element(MobileBy.XPATH, xpath)
+            return True
+        except NoSuchElementException:
+            return False
+    #
+    # @allure.step("Edit Profile Button")
+    # def test_11_EditProfile(self):
+    #
+    #     edit_profile = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Edit Profile')
+    #     edit_profile.click()
+    #     time.sleep(5)
+    #
+    #     # click on change image icon
+    #     self.driver.implicitly_wait(5)
+    #
+    #     change_image = self.driver.find_element(MobileBy.XPATH,
+    #                                             '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+    #                                             '/android.widget.FrameLayout/android.widget.FrameLayout/android'
+    #                                             '.widget.FrameLayout/android.view.View/android.view.View/android'
+    #                                             '.view.View/android.view.View/android.view.View/android.view.View'
+    #                                             '/android.widget.ImageView[3]')
+    #     change_image.click()
+    #     time.sleep(5)
+    #
+    # @allure.step("Test Avatar Count")
+    # def test_12_AvatarCount(self):
+    #     WebDriverWait(self.driver, 10)
+    #
+    #     # Navigate to the page with avatars
+    #
+    #     # Define a list of 8 XPaths for avatars
+    #     avatar_xpaths = [
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[1]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.view.View/android.widget.ImageView[1]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[2]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[3]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[4]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[5]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[6]',
+    #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
+    #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
+    #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
+    #         '2]/android.view.View/android.widget.ImageView[7]'
+    #     ]
+    #
+    #     # Initialize a count for the avatars found
+    #     avatar_count = 0
+    #
+    #     # Iterate through the XPaths and locate avatar elements
+    #     for xpath in avatar_xpaths:
+    #         try:
+    #             self.driver.find_element(MobileBy.XPATH, xpath)
+    #             avatar_count += 1
+    #         except NoSuchElementException:
+    #             pass  # Handle element not found if needed
+    #
+    #     # Assertion: Check if the number of avatars is 8
+    #     assert avatar_count == 8, "Expected 8 avatars, but found different number"
+    #     time.sleep(1)
+    #
+    #     # choose_avatar_text = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Choose an avatar')
+    #     # assert choose_avatar_text.is_displayed(), "Choose an avatar text not displayed"
+    #     # assert choose_avatar_text.text == "Choose an avatar", "Incorrect text"
+    #
+    # @allure.step("Test Avatar Selection")
+    # def test_13_AvatarSelection(self):
+    #     self.driver.implicitly_wait(5)
+    #     choose_image = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+    #                                                             '.LinearLayout/android.widget.FrameLayout/android'
+    #                                                             '.widget.FrameLayout/android.widget.FrameLayout'
+    #                                                             '/android.view.View/android.view.View/android.view'
+    #                                                             '.View['
+    #                                                             '1]/android.view.View/android.widget.ScrollView'
+    #                                                             '/android.view.View['
+    #                                                             '2]/android.view.View/android.widget.ImageView[6]')
+    #     choose_image.click()
+    #     time.sleep(5)
+    #
+    #     save = self.driver.find_element(MobileBy.XPATH,
+    #                                     '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android'
+    #                                     '.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout'
+    #                                     '/android.view.View/android.view.View/android.view.View/android.view.View'
+    #                                     '/android.view.View/android.view.View/android.widget.ImageView[2]')
+    #     save.click()
+    #
+    #     time.sleep(5)
+    #
+    # @allure.step("Change Profile")
+    # def test_14_CancelBtn(self):
+    #     cancel_btn = self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
+    #     cancel_btn.click()
+    #
+    # @allure.step("Click on Offers")
+    # def test_15_OffersBtn(self):
+    #     # offers page
+    #     time.sleep(5)
+    #     offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Offers"]')
+    #     offer_btn.click()
+    #     time.sleep(5)
+    #
+    # @allure.step("Click on Rewards")
+    # def test_16_RewardsBtn(self):
+    #     # Rewards page
+    #     time.sleep(5)
+    #     offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Rewards"]')
+    #
+    #     offer_btn.click()
+    #
+    # @allure.step("Click on Favourites")
+    # def test_17_FavouritesBtn(self):
+    #     # Favourites button
+    #     time.sleep(5)
+    #     fav_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Favourites"]')
+    #
+    #     fav_btn.click()
+    #     self.driver.implicitly_wait(3)
+    #     wait = WebDriverWait(self.driver, 3)
+    #     offers_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Offers"]')
+    #     offers_btn.click()
+    #     time.sleep(5)
+    #     rewards_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Rewards"]')
+    #     rewards_btn.click()
+    #     time.sleep(5)
+    #
+    #     all_fav = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'All')
+    #     all_fav.click()
+    #
+    # @allure.step("Number of Favourites")
+    # def test_18_FavList(self):
+    #     time.sleep(5)
+    #     wait = WebDriverWait(self.driver, 10)
+    #
+    #     self.favorites_text = wait.until(EC.presence_of_element_located((MobileBy.XPATH, '//android.view.View['
+    #                                                                                      '@content-desc'
+    #                                                                                      '="Favourites"]')))
+    #
+    #     # Assertion: Check if the "Favorites" text is displayed
+    #     assert self.favorites_text.is_displayed(), "Text 'Favourites' not displayed"
+    #
+    # @allure.step("Click on Home")
+    # def test_19_HomeBtn(self):
+    #
+    #     # Home page
+    #
+    #     wait = WebDriverWait(self.driver, 10)
+    #
+    #     self.home_btn = wait.until(EC.presence_of_element_located((MobileBy.XPATH, '//android.widget.ImageView['
+    #                                                                                '@content-desc="Home"]')))
+    #
+    #     self.home_btn.click()
+    #     time.sleep(3)
+    #
+    #     assert self.home_btn.is_displayed(), "Text 'All Deals' All Deals 'not found"
+    #
+    # @allure.step("Click on the next button for Vendors shown on Dashboard ")
+    # def test_20_NextBtn(self):
+    #     time.sleep(3)
+    #     next_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+    #                                                         '.LinearLayout/android.widget.FrameLayout/android.widget'
+    #                                                         '.FrameLayout/android.widget.FrameLayout/android.view'
+    #                                                         '.View/android.view.View/android.view.View/android.view'
+    #                                                         '.View/android.widget.ScrollView/android.widget'
+    #                                                         '.ImageView[4]')
+    #     for _ in range(5):  # Click the item five times
+    #         next_btn.click()
+    #
+    # def test_21_BackBtn(self):
+    #     time.sleep(3)
+    #     back_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+    #                                                         '.LinearLayout/android.widget.FrameLayout/android.widget'
+    #                                                         '.FrameLayout/android.widget.FrameLayout/android.view'
+    #                                                         '.View/android.view.View/android.view.View/android.view'
+    #                                                         '.View/android.widget.ScrollView/android.widget'
+    #                                                         '.ImageView[3]')
+    #     for _ in range(3):  # Click the item five times
+    #         back_btn.click()
+    #
+    # @allure.step("Click view all ")
+    # def test_22_ViewAll(self):
+    #     time.sleep(3)
+    #     view_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'View all')
+    #     view_all.click()
+    #     time.sleep(3)
+    #
+    # @allure.step("Assert List of Partners")
+    # def test_23_AssertListOfPartners(self):
+    #     WebDriverWait(self.driver, 10)
+    #
+    #     def scroll_to_bottom():
+    #         for _ in range(1):  # Scroll 1 time (adjust as needed)
+    #             # Define the coordinates for the scroll action
+    #             start_x = 500  # Adjust this value based on your app's layout
+    #             start_y = 1600  # Adjust this value based on your app's layout
+    #             end_y = 200  # Adjust this value based on your app's layout
+    #
+    #             # Perform the scroll action
+    #             action = TouchAction(self.driver)
+    #             action.press(x=start_x, y=start_y).move_to(x=start_x, y=end_y).release().perform()
+    #
+    #     expected_partner_ids = ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
+    #                             "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
+    #                             "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]
+    #
+    #     scroll_to_bottom()
+    #
+    #     # Iterate through the expected company IDs and check if they are present
+    #     for partner_id in expected_partner_ids:
+    #         try:
+    #             self.driver.find_element(MobileBy.ACCESSIBILITY_ID, partner_id)
+    #         except NoSuchElementException:
+    #             assert False, f"Company with ID '{partner_id}' not found"
+    #
+    # @allure.step("Sort List of Partners A-Z")
+    # def test_24_SortListAtoZ(self):
+    #     WebDriverWait(self.driver, 10)
+    #
+    #     # Locate the sort button and click it
+    #     sort_button = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sort by")
+    #     sort_button.click()
+    #
+    #     # Locate the "A-Z" sort option and click it
+    #     sort_option_az = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (A - Z)")
+    #     sort_option_az.click()
+    #     time.sleep(3)
+    #
+    #     # Get the list of company names after sorting
+    #     sorted_company_names = self.get_company_names()
+    #
+    #     # Assertion: Check if the list is sorted in ascending alphabetical order
+    #     assert sorted_company_names == sorted(sorted_company_names), "List is not sorted A-Z"
+    #
+    # @allure.step("Sort List of Partners Z-A")
+    # def test_25_SortListZtoA(self):
+    #     WebDriverWait(self.driver, 10)
+    #     time.sleep(5)
+    #
+    #     # Locate the sort button and click it
+    #     sort_button = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Name (A - '
+    #                                                            'Z)"]')
+    #     sort_button.click()
+    #
+    #     # Locate the "Z-A" sort option and click it
+    #     sort_option_za = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (Z - A)")
+    #     sort_option_za.click()
+    #     time.sleep(2)
+    #
+    #     # Get the list of company names after sorting
+    #     sorted_company_names = self.get_company_names()
+    #
+    #     # Assertion: Check if the list is sorted in descending alphabetical order
+    #     assert sorted_company_names == sorted(sorted_company_names, reverse=True), "List is not sorted Z-A"
+    #
+    # def get_company_names(self):
+    #     company_names = []
+    #
+    #     # Iterate through company elements and extract names
+    #     for company_id in ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
+    #                        "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
+    #                        "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]:
+    #         try:
+    #             company_element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, company_id)
+    #             company_names.append(company_element.text)
+    #         except NoSuchElementException:
+    #             pass  # Handle element not found if needed
+    #
+    #     return company_names
+    #
+    # def test_26_backAndSave(self):
+    #
+    #     back_save = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+    #                                                          '.LinearLayout/android.widget.FrameLayout/android.widget'
+    #                                                          '.FrameLayout/android.widget.FrameLayout/android.view'
+    #                                                          '.View/android.view.View/android.view.View/android.view'
+    #                                                          '.View/android.widget.ImageView[1]')
+    #     back_save.click()
+    #     time.sleep(2)
 
-        change_image = self.driver.find_element(MobileBy.XPATH,
-                                                '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
-                                                '/android.widget.FrameLayout/android.widget.FrameLayout/android'
-                                                '.widget.FrameLayout/android.view.View/android.view.View/android'
-                                                '.view.View/android.view.View/android.view.View/android.view.View'
-                                                '/android.widget.ImageView[3]')
-        change_image.click()
-        time.sleep(5)
+    # @allure.step("Reward Options click ")
+    # def test_27_RewardsOptions(self):
+    #     WebDriverWait(self.driver, 3)
+    #
+    #     rewards_option = self.driver.find_element(MobileBy.XPATH,
+    #                                               '//android.widget.ImageView[@content-desc="Reward Options"]')
+    #     rewards_option.click()
+    #
+    #     WebDriverWait(self.driver, 3)
+    #
+    #     dismiss_button = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Dismiss"]')
+    #     dismiss_button.click()
+    #
+    #     time.sleep(3)
 
-    @allure.step("Test Avatar Count")
-    def test_12_AvatarCount(self):
-        WebDriverWait(self.driver, 10)
+        # wait = WebDriverWait(self.driver, 3)
+        #
+        # self.pointsAfricaText = wait.until(EC.presence_of_element_located((MobileBy.ACCESSIBILITY_ID,
+        #                                                                    'Points Africa')))
+        #
+        # # Assertion: Check if the "Points Africa" text is displayed
+        # assert self.pointsAfricaText.is_displayed(), "Text 'Points Africa' not displayed"
 
-        # Navigate to the page with avatars
-
-        # Define a list of 8 XPaths for avatars
-        avatar_xpaths = [
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[1]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.view.View/android.widget.ImageView[1]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[2]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[3]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[4]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[5]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[6]',
-            '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
-            '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
-            '1]/android.view.View/android.widget.ScrollView/android.view.View['
-            '2]/android.view.View/android.widget.ImageView[7]'
-        ]
-
-        # Initialize a count for the avatars found
-        avatar_count = 0
-
-        # Iterate through the XPaths and locate avatar elements
-        for xpath in avatar_xpaths:
-            try:
-                self.driver.find_element(MobileBy.XPATH, xpath)
-                avatar_count += 1
-            except NoSuchElementException:
-                pass  # Handle element not found if needed
-
-        # Assertion: Check if the number of avatars is 8
-        assert avatar_count == 8, "Expected 8 avatars, but found different number"
-        time.sleep(1)
-
-        # choose_avatar_text = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Choose an avatar')
-        # assert choose_avatar_text.is_displayed(), "Choose an avatar text not displayed"
-        # assert choose_avatar_text.text == "Choose an avatar", "Incorrect text"
-
-    @allure.step("Test Avatar Selection")
-    def test_13_AvatarSelection(self):
-        self.driver.implicitly_wait(5)
-        choose_image = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-                                                                '.LinearLayout/android.widget.FrameLayout/android'
-                                                                '.widget.FrameLayout/android.widget.FrameLayout'
-                                                                '/android.view.View/android.view.View/android.view'
-                                                                '.View['
-                                                                '1]/android.view.View/android.widget.ScrollView'
-                                                                '/android.view.View['
-                                                                '2]/android.view.View/android.widget.ImageView[6]')
-        choose_image.click()
-        time.sleep(5)
-
-        save = self.driver.find_element(MobileBy.XPATH,
-                                        '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android'
-                                        '.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout'
-                                        '/android.view.View/android.view.View/android.view.View/android.view.View'
-                                        '/android.view.View/android.view.View/android.widget.ImageView[2]')
-        save.click()
-
-        time.sleep(5)
-
-    @allure.step("Change Profile")
-    def test_14_CancelBtn(self):
-        cancel_btn = self.driver.find_element(MobileBy.CLASS_NAME, "android.widget.Button")
-        cancel_btn.click()
-
-    @allure.step("Click on Offers")
-    def test_15_OffersBtn(self):
-        # offers page
-        time.sleep(5)
-        offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Offers"]')
-        offer_btn.click()
-        time.sleep(5)
-
-    @allure.step("Click on Rewards")
-    def test_16_RewardsBtn(self):
-        # Rewards page
-        time.sleep(5)
-        offer_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Rewards"]')
-
-        offer_btn.click()
-
-    @allure.step("Click on Favourites")
-    def test_17_FavouritesBtn(self):
-        # Favourites button
-        time.sleep(5)
-        fav_btn = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Favourites"]')
-
-        fav_btn.click()
-        self.driver.implicitly_wait(3)
-        wait = WebDriverWait(self.driver, 3)
-        offers_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Offers"]')
-        offers_btn.click()
-        time.sleep(5)
-        rewards_btn = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Rewards"]')
-        rewards_btn.click()
-        time.sleep(5)
-
-        all_fav = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'All')
-        all_fav.click()
-
-    @allure.step("Number of Favourites")
-    def test_18_FavList(self):
-        time.sleep(5)
-        wait = WebDriverWait(self.driver, 10)
-
-        self.favorites_text = wait.until(EC.presence_of_element_located((MobileBy.XPATH, '//android.view.View['
-                                                                                         '@content-desc'
-                                                                                         '="Favourites"]')))
-
-        # Assertion: Check if the "Favorites" text is displayed
-        assert self.favorites_text.is_displayed(), "Text 'Favourites' not displayed"
-
-    @allure.step("Click on Home")
-    def test_19_HomeBtn(self):
-
-        # Home page
-
-        wait = WebDriverWait(self.driver, 10)
-
-        self.home_btn = wait.until(EC.presence_of_element_located((MobileBy.XPATH, '//android.widget.ImageView['
-                                                                                   '@content-desc="Home"]')))
-
-        self.home_btn.click()
-        time.sleep(3)
-
-        assert self.home_btn.is_displayed(), "Text 'All Deals' All Deals 'not found"
-
-    @allure.step("Click on the next button for Vendors shown on Dashboard ")
-    def test_20_NextBtn(self):
-        time.sleep(3)
-        next_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
-                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
-                                                            '.View/android.view.View/android.view.View/android.view'
-                                                            '.View/android.widget.ScrollView/android.widget'
-                                                            '.ImageView[4]')
-        for _ in range(5):  # Click the item five times
-            next_btn.click()
-
-    def test_21_BackBtn(self):
-        time.sleep(3)
-        back_btn = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
-                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
-                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
-                                                            '.View/android.view.View/android.view.View/android.view'
-                                                            '.View/android.widget.ScrollView/android.widget'
-                                                            '.ImageView[3]')
-        for _ in range(3):  # Click the item five times
-            back_btn.click()
-
-    @allure.step("Click view all ")
-    def test_22_ViewAll(self):
-        time.sleep(3)
-        view_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'View all')
-        view_all.click()
-        time.sleep(3)
-
-    @allure.step("Assert List of Partners")
-    def test_23_AssertListOfPartners(self):
-        WebDriverWait(self.driver, 10)
-
-        def scroll_to_bottom():
-            for _ in range(1):  # Scroll 1 time (adjust as needed)
-                # Define the coordinates for the scroll action
-                start_x = 500  # Adjust this value based on your app's layout
-                start_y = 1600  # Adjust this value based on your app's layout
-                end_y = 200  # Adjust this value based on your app's layout
-
-                # Perform the scroll action
-                action = TouchAction(self.driver)
-                action.press(x=start_x, y=start_y).move_to(x=start_x, y=end_y).release().perform()
-
-        expected_partner_ids = ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
-                                "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
-                                "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]
-
-        scroll_to_bottom()
-
-        # Iterate through the expected company IDs and check if they are present
-        for partner_id in expected_partner_ids:
-            try:
-                self.driver.find_element(MobileBy.ACCESSIBILITY_ID, partner_id)
-            except NoSuchElementException:
-                assert False, f"Company with ID '{partner_id}' not found"
-
-    @allure.step("Sort List of Partners A-Z")
-    def test_24_SortListAtoZ(self):
-        WebDriverWait(self.driver, 10)
-
-        # Locate the sort button and click it
-        sort_button = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Sort by")
-        sort_button.click()
-
-        # Locate the "A-Z" sort option and click it
-        sort_option_az = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (A - Z)")
-        sort_option_az.click()
-        time.sleep(3)
-
-        # Get the list of company names after sorting
-        sorted_company_names = self.get_company_names()
-
-        # Assertion: Check if the list is sorted in ascending alphabetical order
-        assert sorted_company_names == sorted(sorted_company_names), "List is not sorted A-Z"
-
-    @allure.step("Sort List of Partners Z-A")
-    def test_25_SortListZtoA(self):
-        WebDriverWait(self.driver, 10)
-        time.sleep(5)
-
-        # Locate the sort button and click it
-        sort_button = self.driver.find_element(MobileBy.XPATH, '//android.widget.ImageView[@content-desc="Name (A - '
-                                                               'Z)"]')
-        sort_button.click()
-
-        # Locate the "Z-A" sort option and click it
-        sort_option_za = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, "Name (Z - A)")
-        sort_option_za.click()
-        time.sleep(2)
-
-        # Get the list of company names after sorting
-        sorted_company_names = self.get_company_names()
-
-        # Assertion: Check if the list is sorted in descending alphabetical order
-        assert sorted_company_names == sorted(sorted_company_names, reverse=True), "List is not sorted Z-A"
-
-    def get_company_names(self):
-        company_names = []
-
-        # Iterate through company elements and extract names
-        for company_id in ["Goil", "Banana Home", "Starlite", "Star Oil", "Barcelos", "Golden Eagle Cinema",
-                           "iStore", "Melcom", "Shoprite", "Tecno", "Telefonika", "Silverbird Cinemas",
-                           "Compu-Ghana", "Chicken Inn", "Vida e Caffe"]:
-            try:
-                company_element = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, company_id)
-                company_names.append(company_element.text)
-            except NoSuchElementException:
-                pass  # Handle element not found if needed
-
-        return company_names
