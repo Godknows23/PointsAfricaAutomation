@@ -8,6 +8,7 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 dropdown_items = []
 
 
@@ -142,7 +143,7 @@ class PointsAfrica(unittest.TestCase):
         password_input.send_keys(pass_enter)
 
         # Hide the keyboard if needed
-        self.driver.hide_keyboard()
+        self.driver.press_keycode(4)  # 4 corresponds to the "Back" key
 
     @allure.step("Click on the Password")
     def test_05_PassEye(self):
@@ -258,7 +259,7 @@ class PointsAfrica(unittest.TestCase):
     #         # Optional: Wait for a short time to let the scrolling action complete (if required)
     #         self.driver.implicitly_wait(5)
     #
-    # @allure.step("Click on the Navigation drawer")
+    @allure.step("Click on the Navigation drawer")
     def test_10_NavDrawer(self):
 
         # click on the Navigation Drawer
@@ -276,7 +277,8 @@ class PointsAfrica(unittest.TestCase):
         self.driver.implicitly_wait(5)
         time.sleep(5)
 
-    def test_11_TransactionHistory(self):
+    @allure.step("Transaction History page")
+    def test_11_TransactionHistoryPage(self):
 
         # click on the Transaction history link
         self.driver.implicitly_wait(10)
@@ -295,7 +297,167 @@ class PointsAfrica(unittest.TestCase):
             return True
         except NoSuchElementException:
             return False
-    #
+
+    @allure.step("Transaction History filters")
+    def test_12_TransHistoryOffersRewards(self):
+        WebDriverWait(self.driver, 2)
+        offers_filter = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Offers')
+        offers_filter.click()
+        time.sleep(2)
+
+        rewards_filter = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Rewards')
+        rewards_filter.click()
+        time.sleep(1)
+
+        all_filter = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'All')
+        all_filter.click()
+        time.sleep(2)
+
+    @allure.step("Transaction History filters Corner Icon click ---- Check 'Filters & Clear All' Texts Availability")
+    def test_13_TransHistoryFilterIcon(self):
+        WebDriverWait(self.driver, 2)
+        corner_filter = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android'
+                                                                 '.widget.LinearLayout/android.widget.FrameLayout'
+                                                                 '/android.widget.FrameLayout/android.widget'
+                                                                 '.FrameLayout/android.view.View/android.view.View'
+                                                                 '/android.view.View/android.view.View/android.widget'
+                                                                 '.ScrollView/android.widget.ImageView')
+        corner_filter.click()
+        time.sleep(2)
+        filters_xpath = '//android.view.View[@content-desc="Filters"]'
+        clear_xpath = '//android.widget.Button[@content-desc="Clear all"]'
+        assert self.is_statement_present(filters_xpath), "Filters is not present"
+        assert self.is_statement_present(clear_xpath), "Clear all is not present"
+
+    def is_statement_present(self, xpath):
+        try:
+            self.driver.find_element(MobileBy.XPATH, xpath)
+            return True
+        except NoSuchElementException:
+            return False
+
+    @allure.step("Transaction History filters by Date")
+    def test_14_TransHistoryAllFilters(self):
+        WebDriverWait(self.driver, 2)
+        date_filter = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Date')
+        date_filter.click()
+        time.sleep(2)
+        start_date = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Start Date')
+        start_date.click()
+        time.sleep(2)
+        choose_date = self.driver.find_element(MobileBy.XPATH, '//android.view.View'
+                                                               '[@content-desc="Sun, 20 August 2023"]')
+        choose_date.click()
+        ok_date = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'OK')
+        ok_date.click()
+
+        # click on end date
+
+        time.sleep(2)
+        start_date = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'End Date')
+        start_date.click()
+        time.sleep(2)
+        select_date = self.driver.find_element(MobileBy.XPATH, '//android.view.View[@content-desc="Tue, 22 August '
+                                                               '2023"]')
+        select_date.click()
+        click_ok = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'OK')
+        click_ok.click()
+        time.sleep(2)
+        hide_filter = self.driver.find_element(MobileBy.XPATH, '//android.widget.Button[@content-desc="Text to '
+                                                               'announce in accessibility modes"]')
+        hide_filter.click()
+        self.driver.implicitly_wait(3)
+        time.sleep(3)
+
+    @allure.step("Transaction History filter by Points")
+    def test_14_TransHistoryPointsFilter(self):
+        WebDriverWait(self.driver, 2)
+        home = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                        '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                        '.FrameLayout/android.widget.FrameLayout/android.view.View'
+                                                        '/android.view.View/android.view.View/android.view.View'
+                                                        '/android.view.View[1]/android.widget.ImageView')
+        home.click()
+        time.sleep(2)
+
+        clear_all = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Clear all')
+        clear_all.click()
+        WebDriverWait(self.driver, 5)
+        time.sleep(3)
+
+    @allure.step("Transaction History filter by Amount")
+    def test_15_TransHistoryAmountFilter(self):
+        WebDriverWait(self.driver, 2)
+
+        main_filter = self.driver.find_element(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                               '.LinearLayout/android.widget.FrameLayout/android'
+                                                               '.widget.FrameLayout/android.widget.FrameLayout'
+                                                               '/android.view.View/android.view.View/android.view'
+                                                               '.View/android.view.View/android.widget.ScrollView'
+                                                               '/android.widget.ImageView')
+        main_filter.click()
+        time.sleep(3)
+        self.driver.implicitly_wait(4)
+        self.driver.find_elements(MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout'
+                                                  '/android.widget.FrameLayout/android.widget.FrameLayout/android'
+                                                  '.widget.FrameLayout/android.view.View/android.view.View/android'
+                                                  '.view.View[1]/android.view.View/android.widget.ScrollView')
+
+        # Swipe from the bottom of the screen to the top
+        height = self.driver.get_window_size()['height']
+        width = self.driver.get_window_size()['width']
+        self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
+                          duration=800)
+        self.driver.swipe(start_x=width * 0.5, start_y=height * 0.8, end_x=width * 0.5, end_y=height * 0.2,
+                          duration=800)
+
+        amount_filter = self.driver.find_element(MobileBy.ACCESSIBILITY_ID, 'Amount')
+        amount_filter.click()
+        time.sleep(2)
+
+        start_amount = WebDriverWait(self.driver, 15).until(
+            EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
+                                                            '.View/android.view.View/android.view.View['
+                                                            '1]/android.view.View/android.view.View/android.widget'
+                                                            '.EditText[1]'))
+        )
+
+        # Use TouchAction to simulate a tap on the input field
+        TouchAction(self.driver).tap(start_amount).perform()
+
+        ghs_amount = "100"
+        start_amount.send_keys(ghs_amount)
+
+        # Hide the keyboard if needed
+        self.driver.press_keycode(66)  # 4 corresponds to the "Back" key
+
+        self.driver.implicitly_wait(3)
+        time.sleep(3)
+
+        max_amount = WebDriverWait(self.driver, 15).until(
+            EC.presence_of_element_located((MobileBy.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget'
+                                                            '.LinearLayout/android.widget.FrameLayout/android.widget'
+                                                            '.FrameLayout/android.widget.FrameLayout/android.view'
+                                                            '.View/android.view.View/android.view.View['
+                                                            '1]/android.view.View/android.view.View/android.widget'
+                                                            '.EditText[2]'))
+        )
+
+        # Use TouchAction to simulate a tap on the input field
+        TouchAction(self.driver).tap(max_amount).perform()
+
+        amount = "1000"
+        max_amount.send_keys(amount)
+
+        # Hide the keyboard if needed
+        # self.driver.press_keycode(66)
+
+        self.driver.implicitly_wait(3)
+
+        time.sleep(5)
+
     # @allure.step("Edit Profile Button")
     # def test_11_EditProfile(self):
     #
@@ -322,7 +484,7 @@ class PointsAfrica(unittest.TestCase):
     #     # Navigate to the page with avatars
     #
     #     # Define a list of 8 XPaths for avatars
-    #     avatar_xpaths = [
+    #     avatar_paths = [
     #         '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android'
     #         '.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.view.View/android.view.View['
     #         '1]/android.view.View/android.widget.ScrollView/android.view.View['
@@ -361,7 +523,7 @@ class PointsAfrica(unittest.TestCase):
     #     avatar_count = 0
     #
     #     # Iterate through the XPaths and locate avatar elements
-    #     for xpath in avatar_xpaths:
+    #     for xpath in avatar_paths:
     #         try:
     #             self.driver.find_element(MobileBy.XPATH, xpath)
     #             avatar_count += 1
@@ -604,11 +766,10 @@ class PointsAfrica(unittest.TestCase):
     #
     #     time.sleep(3)
 
-        # wait = WebDriverWait(self.driver, 3)
-        #
-        # self.pointsAfricaText = wait.until(EC.presence_of_element_located((MobileBy.ACCESSIBILITY_ID,
-        #                                                                    'Points Africa')))
-        #
-        # # Assertion: Check if the "Points Africa" text is displayed
-        # assert self.pointsAfricaText.is_displayed(), "Text 'Points Africa' not displayed"
-
+    # wait = WebDriverWait(self.driver, 3)
+    #
+    # self.pointsAfricaText = wait.until(EC.presence_of_element_located((MobileBy.ACCESSIBILITY_ID,
+    #                                                                    'Points Africa')))
+    #
+    # # Assertion: Check if the "Points Africa" text is displayed
+    # assert self.pointsAfricaText.is_displayed(), "Text 'Points Africa' not displayed"
